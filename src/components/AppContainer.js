@@ -1,42 +1,35 @@
-import React, { Component } from "react";
-import NavTabs from "./NavTabs";
-import Home from "./pages/Home";
-import About from "./pages/About";
-import Blog from "./pages/Blog";
-import Contact from "./pages/Contact";
+import React, { useState } from 'react';
+import NavTabs from './NavTabs';
+import Home from './pages/Home/Home';
+import About from './pages/About';
+import Blog from './pages/Blog';
+import Contact from './pages/Contact';
 
-class Portfolio extends Component {
-  state = {
-    currentPage: "Home"
-  };
+export default function AppContainer() {
+  const [currentPage, setCurrentPage] = useState('Home');
 
-  handlePageChange = page => {
-    this.setState({ currentPage: page });
-  };
-
-  renderPage = () => {
-    if (this.state.currentPage === "Home") {
+  // This method is checking to see what the value of `currentPage` is. Depending on the value of currentPage, we return the corresponding component to render.
+  const renderPage = () => {
+    if (currentPage === 'Home') {
       return <Home />;
-    } else if (this.state.currentPage === "About") {
-      return <About />;
-    } else if (this.state.currentPage === "Blog") {
-      return <Blog />;
-    } else {
-      return <Contact />;
     }
+    if (currentPage === 'About') {
+      return <About />;
+    }
+    if (currentPage === 'Blog') {
+      return <Blog />;
+    }
+    return <Contact />;
   };
 
-  render() {
-    return (
-      <div>
-        <NavTabs
-          currentPage={this.state.currentPage}
-          handlePageChange={this.handlePageChange}
-        />
-        {this.renderPage()}
-      </div>
-    );
-  }
-}
+  const handlePageChange = (page) => setCurrentPage(page);
 
-export default Portfolio;
+  return (
+    <div className='backdrop'>
+      {/* We are passing the currentPage from state and the function to update it */}
+      <NavTabs currentPage={currentPage} handlePageChange={handlePageChange} />
+      {/* Here we are calling the renderPage method which will return a component  */}
+      {renderPage()}
+    </div>
+  );
+}
